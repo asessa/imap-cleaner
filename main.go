@@ -11,6 +11,8 @@ import (
 	"golang.org/x/term"
 )
 
+const version = "0.1.1"
+
 func inSlice(value string, slice []string) bool {
 	for _, item := range slice {
 		if item == value {
@@ -48,7 +50,7 @@ func Cleanup(host string, port int, user, pass string, mailboxes []string, from,
 	}
 
 	// Retreive a list of available mailboxes
-	availableMailboxes := make(chan *imap.MailboxInfo, 10)
+	availableMailboxes := make(chan *imap.MailboxInfo, 100)
 	done := make(chan error, 1)
 	go func() {
 		done <- c.List("", "*", availableMailboxes)
@@ -219,7 +221,7 @@ func main() {
 	}
 
 	err := (&cli.App{
-		Version: "0.1.0",
+		Version: version,
 		Name:    "imap-cleaner",
 		Usage:   "cleanup and expunge IMAP folders",
 		Commands: []*cli.Command{
